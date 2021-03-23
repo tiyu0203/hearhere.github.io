@@ -6,7 +6,7 @@
 -->
 <html>
 	<style>
-		#model {
+		#stl {
 			display: flex;
 			justify-content: center;
 		}
@@ -36,7 +36,18 @@
 		<!-- Two -->
 			<section id="two" class="wrapper style2">
 				<div class="inner">
-				<div id="model" style="width: 500px; height: 500px"> </div>
+					<div class="gallery">
+						<div>
+							<div class="image fit">
+								<div id="model" style="width: 500px; height: 500px"> </div>
+							</div>
+						</div>
+						<div>
+							<div class="image fit">
+								<a href="tracker.html"><img src="images/amp_v1_finishedboard.jpg" alt="" /></a>
+							</div>
+						</div>
+					</div>
 					<div class="box">
 						<div class="content">
 							<p>Our speaker utilizes computer vision algorithms to deliver personal
@@ -78,7 +89,7 @@
 				
 				var controls = new THREE.OrbitControls(camera, renderer.domElement);
 				controls.enableDamping = true;
-				controls.rotateSpeed = 0.05;
+				controls.rotateSpeed = 0.2;
 				controls.dampingFactor = 0.1;
 				controls.enableZoom = true;
 				controls.autoRotate = true;
@@ -89,9 +100,9 @@
 				
 				(new THREE.STLLoader()).load(model, function (geometry) {
 					var material = new THREE.MeshPhongMaterial({ 
-					color: 0xff5533, 
+					color: 0x83b9e6, 
 					specular: 100, 
-					shininess: 100 });
+					shininess: 0 });
 					
 					var mesh = new THREE.Mesh(geometry, material);
 					scene.add(mesh);
