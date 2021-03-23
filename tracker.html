@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<!--
+	Hielo by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<style>
+		#model {
+			display: flex;
+			justify-content: center;
+		}
+	</style>
+	<head>
+		<title>Hielo by TEMPLATED</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="subpage">
+	
+		<!-- Header -->
+			<header id="header">
+				<a href="#menu">Menu</a>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="generic.html">Generic</a></li>
+					<li><a href="elements.html">Elements</a></li>
+				</ul>
+			</nav>
+			
+			
+		<!-- One -->
+			<section id="One" class="wrapper style3">
+				<div class="inner">
+					<header class="align-center">
+						<h2>Tracking Assembly</h2>
+					</header>
+				</div>
+			</section>
+
+		<!-- Two -->
+			<section id="two" class="wrapper style2">
+				<div class="inner">
+				<div id="model" style="width: 500px; height: 500px"> </div>
+					<div class="box">
+						<div class="content">
+							<p>Our speaker utilizes computer vision algorithms to deliver personal
+							audio to a single person. This is acomplished by physically directing 
+							the transducer array using motors and gears. Our tracking assembly is 
+							designed to be mounted on a ceiling where it will will have a clear 
+							line of sight towards most sections of a room. </p>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+			
+
+		<!-- Footer -->
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="assets/js/stl/three.min.js"></script>
+			<script src="assets/js/stl/STLLoader.js"></script>
+			<script src="assets/js/stl/OrbitControls.js"></script>
+			<script>
+				function STLViewer(model, elementID) {
+				var elem = document.getElementById(elementID)
+				var camera = new THREE.PerspectiveCamera(70, 
+					elem.clientWidth/elem.clientHeight, 1, 1000);
+				var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+					renderer.setSize(elem.clientWidth, elem.clientHeight);
+				elem.appendChild(renderer.domElement);
+				window.addEventListener('resize', function () {
+					renderer.setSize(elem.clientWidth, elem.clientHeight);
+					camera.aspect = elem.clientWidth/elem.clientHeight;
+					camera.updateProjectionMatrix();
+				}, false);
+				
+				var controls = new THREE.OrbitControls(camera, renderer.domElement);
+				controls.enableDamping = true;
+				controls.rotateSpeed = 0.05;
+				controls.dampingFactor = 0.1;
+				controls.enableZoom = true;
+				controls.autoRotate = true;
+				controls.autoRotateSpeed = .75;
+				
+				var scene = new THREE.Scene();
+				scene.add(new THREE.HemisphereLight(0xffffff, 1.5));
+				
+				(new THREE.STLLoader()).load(model, function (geometry) {
+					var material = new THREE.MeshPhongMaterial({ 
+					color: 0xff5533, 
+					specular: 100, 
+					shininess: 100 });
+					
+					var mesh = new THREE.Mesh(geometry, material);
+					scene.add(mesh);
+					
+					var middle = new THREE.Vector3();
+					geometry.computeBoundingBox();
+					geometry.boundingBox.getCenter(middle);
+					mesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation( 
+						-middle.x, -middle.y, -middle.z ) );
+						
+					var largestDimension = Math.max(geometry.boundingBox.max.x,
+						geometry.boundingBox.max.y, 
+						geometry.boundingBox.max.z)
+					camera.position.z = largestDimension * 1.5;
+				
+					var animate = function () {
+						requestAnimationFrame(animate);
+						controls.update();
+						renderer.render(scene, camera);
+					}; 
+				
+					animate();
+				});
+			}
+			</script>
+			<script type="text/javascript">
+				window.onload = function() {
+				STLViewer("logo.stl", "model")
+			}
+			</script>
+	</body>
+</html> 
